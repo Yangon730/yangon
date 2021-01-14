@@ -1,2 +1,2 @@
 # yangon
-first people  new
+I am new
