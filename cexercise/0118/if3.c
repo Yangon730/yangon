@@ -1,13 +1,18 @@
 #include <stdio.h>
 int main(void)
 {
-	int per,n;
+	int per,n ;
+	int i=0;
+	while(i<10){
 	printf("请输入一个成绩:\n");
 	scanf("%d",&per);
 	if(per<0||per>100){
 	printf("成绩无效\n");
+	continue;
+	
 	}
-  	n = per % 10;
+	{
+  	n = per/ 10;
 
 	switch (n){
 	
@@ -26,6 +31,10 @@ int main(void)
 		break;
 
 
+	}	
+	
+	}
+	i++;
 	}
 	return 0;
 }
