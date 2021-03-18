@@ -1,0 +1,25 @@
+#include <unistd.h>
+#include <stdio.h>
+#define  SIZE  100
+int main(void)
+{
+	int cnt;
+	char buf[SIZE];
+	FILE *fp = fopen(FLNAME , "r"); 
+   	if( NULL == fp){
+		perror("fopen()");
+		return 1;
+	}	
+	fseek(fp , 10 , SEEK_CUR);
+	printf("%ld\n" , ftell(fp));//fell计算偏移量
+	
+
+	rewind(fp);//初始化偏移量到开头
+	
+	cnt = fread(buf , 1 , SIZE , fp);
+
+	fwrite(buf ,1 , cnt , stdout);//流写 
+
+	fclose(fp);
+	return 0;
+}
