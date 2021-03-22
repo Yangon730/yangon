@@ -1,21 +1,24 @@
 #include <stdio.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
+
+#define BUFSIZE  100
 //文件类型
 static char fileType(const struct stat res)
 {	
 	switch (res.st_mode & S_IFMT) {
-		case S_IFBLK:  return 'b';        break;
-		case S_IFCHR:  return 'c';        break;
-		case S_IFDIR:  return 'd';        break;
-		case S_IFIFO:  return 'p';        break;
-		case S_IFLNK:  return 'l';        break;
-		case S_IFREG:  return '-';		  break;
-		case S_IFSOCK: return 's';        break;
-		default:       return -1 ;        break;
+		case S_IFBLK:  return 'b';        
+		case S_IFCHR:  return 'c';        
+		case S_IFDIR:  return 'd';       
+		case S_IFIFO:  return 'p';        
+		case S_IFLNK:  return 'l';        
+		case S_IFREG:  return '-';		  
+		case S_IFSOCK: return 's';        
+		default:       return -1 ;       
 	}
 
 }
@@ -85,7 +88,7 @@ static long fileLink(const struct stat res)
 static char *fileUIDname(const struct stat res)
 {
 	struct passwd *p;
-	p = getpwuid(res.st_uid);
+	p = getpwuid(res.st_uid);	
 	return p->pw_name;
 }
 //
@@ -95,6 +98,23 @@ static char *fileGidname(const struct stat res)
 	g = getgrgid(res.st_gid);
 	return g->gr_name;
 }
+//字节大小
+static int fileBlock(const struct stat res)
+{
+	return res.st_blocks;
+}
+//时间格式
+static char *fileTime(const struct stat res)
+{	
+	struct tm *t;
+	static char buf[BUFSIZE] = {};
+	t=localtime(&res.st_mtime);/* time_t */
+
+	strftime(buf ,BUFSIZE ,"%m月 %d %H:%M" ,t);
+	return buf;
+}
+
+
 int main(int argc ,char *argv[])
 {
 	struct stat res;
@@ -107,11 +127,10 @@ int main(int argc ,char *argv[])
 	}
 	printf("%c",fileType(res));
 	printf("%s ",fileMode(res));
-	printf(" %ld ",fileLink(res));
-	printf(" %s ",fileUIDname(res));
-	printf(" %s \n",fileGidname(res));
-
+	printf("%ld ",fileLink(res));
+	printf("%s ",fileUIDname(res));
+	printf("%s ",fileGidname(res));
+	printf("%d ",fileBlock(res));
+	printf("%s \n",fileTime(res));
 	return 0;
-
-
 }
