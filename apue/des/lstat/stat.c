@@ -115,13 +115,13 @@ static char *fileTime(const struct stat res)
 }
 
 
-int main(int argc ,char *argv[])
+int manls(char *arr)
 {
 	struct stat res;
-	if(argc < 2)
-		return 1;
+//	if(argc < 2)
+//		return 1;
 
-	if(stat(argv[1] , &res) == -1){
+	if(stat(arr , &res) == -1){
 		perror("stat()");
 		return 1;
 	}
